@@ -1,0 +1,8 @@
+{
+    "name": "server/tembo-social",
+    "require": {
+        "okta/jwt-verifier": "^0.2.0",
+        "spomky-labs/jose": "^7.0",
+        "guzzlehttp/psr7": "^1.4"
+    }
+}

@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+ <div ng-app="mainApp" ng-controller="mainCtrl">
+  <select ng-model="selectedItem" ng-options="Type.value as Type.name for Type in Types">
+    <option value="" disabled>Select a type</option>
+  </select>
+  <select ng-if="subItems[selectedItem].length" ng-model="selectedSubItem" ng-options="item.value as item.name for item in subItems[selectedItem]">
+    <option value="" disabled>Select a item</option>
+  </select>
+  <button type="button" class="btn btn-primary" ng-click="add();" ng-class="isLoading ? 'disabled' : '';">Delete
+  </button>
+</div>
+</head>
+<body>
+</body>
+</html>
+<script language="javascript">
+var jimApp = angular.module("mainApp",  []);
+
+jimApp.controller('mainCtrl', function($scope){
+  $scope.Types  = [
+  {
+    name: "item1",
+    value: 0
+  }, 
+  {
+    name: "item2",
+    value: 1,
+  }, 
+  {
+    name: "item3",
+    value: 2
+  }];
+  
+  $scope.subItems = {
+    0:[{ name: "item1", value:0}, { name:"item2", value:1 }, { name:"item3 ", value:2 }],
+    1:[{ name: "item1", value:0}, { name:"item2", value:1 }]
+  };
+});
+</script>
