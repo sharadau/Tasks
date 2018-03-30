@@ -1,4 +1,7 @@
 <?php
+ require_once "config.php";
+ require_once __DIR__ . '\vendor\autoload.php';
+
  header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
@@ -17,10 +20,10 @@ type="text/css"
 rel="stylesheet"/>
 <script type="text/javascript">
   var oktaSignIn = new OktaSignIn({
-    baseUrl: "https://dev-538998.oktapreview.com",
-    clientId: "0oaefscaksGIMdMd50h7",
+    baseUrl: "https://".OKTA_WEB_APP.".com",
+    clientId: CLIENT_ID,
     authParams: {
-      issuer: "https://dev-538998.oktapreview.com/oauth2/default",
+      issuer: "https://".OKTA_WEB_APP.".com/oauth2/default",
       responseType: ['token', 'id_token'],
       display: 'page'
     }
@@ -34,6 +37,7 @@ rel="stylesheet"/>
 
         // Say hello to the person who just signed in:
         console.log('Hello, ' + idToken.claims.email);
+        alert('Hello, ' + idToken.claims.email);
 
         // Save the tokens for later use, e.g. if the page gets refreshed:
         oktaSignIn.tokenManager.add('accessToken', accessToken);
@@ -51,7 +55,10 @@ rel="stylesheet"/>
     oktaSignIn.session.get(function (res) {
       // Session exists, show logged in state.
       if (res.status === 'ACTIVE') {
-        console.log('Welcome back, ' + res.login);
+        //console.log('Welcome back, ' + res.login);
+        console.log('Welcome back, ' + res);
+		
+		alert('Welcome back, ' + res.login);
         return;
       }
       // No session, show the login form
@@ -71,5 +78,21 @@ rel="stylesheet"/>
 </script>
 <body>
     <div id="okta-login-container"></div>
-    ...
+    Welcome 
 </body>
+<?php
+require __DIR__ . '\vendor\autoload.php';
+
+$query = http_build_query([
+    'client_id' => CLIENT_ID,
+    'response_type' => 'code',
+    'response_mode' => 'query',
+    'scope' => 'openid profile',
+	
+    'redirect_uri' => 'http://localhost/temboSocial/login_callback.php',
+    'state' => 'dashboard',
+    'nonce' => $nonce
+]);
+
+header('Location: ' . 'https://'.OKTA_WEB_APP.'.com/oauth2/default/v1/authorize?'.$query);
+?>
